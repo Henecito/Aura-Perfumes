@@ -6,7 +6,7 @@ export default function CarritoAURA() {
   const { carrito, eliminarProducto } = useCarrito();
 
   function enviarWhatsApp() {
-    const numero = "56912345678";
+    const numero = "56933365599";
 
     const mensaje = carrito
       .map(
@@ -16,18 +16,24 @@ export default function CarritoAURA() {
       .join("%0A");
 
     window.open(
-      `https://wa.me/${numero}?text=Hola quiero finalizar mi compra:%0A%0A${mensaje}`,
+      `https://wa.me/${numero}?text=Hola quiero comprar:%0A%0A${mensaje}`,
       "_blank"
     );
   }
 
   return createPortal(
-    <div className="offcanvas offcanvas-end text-bg-dark" id="carritoCanvas">
+    <div
+      className="offcanvas offcanvas-end text-bg-dark"
+      id="carritoCanvas"
+      style={{ paddingTop: "70px", zIndex: 1055 }} // evita superposición con navbar
+    >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title">Carrito</h5>
         <button
+          type="button"
           className="btn-close btn-close-white"
           data-bs-dismiss="offcanvas"
+          aria-label="Cerrar"
         ></button>
       </div>
 

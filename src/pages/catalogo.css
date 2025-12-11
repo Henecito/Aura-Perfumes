@@ -1,8 +1,10 @@
+/* Flip card base */
 .flip-card {
   background: transparent;
-  width: 100%;
+  width: 100%; 
+  max-width: 100%; 
   height: 260px;
-  perspective: 1000px; /* profundidad */
+  perspective: 1000px;
 }
 
 .flip-card-inner {
@@ -13,12 +15,10 @@
   transform-style: preserve-3d;
 }
 
-/* Efecto al pasar el mouse */
 .flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
 }
 
-/* Frente */
 .flip-card-front,
 .flip-card-back {
   position: absolute;
@@ -45,6 +45,7 @@
   transform: rotateY(180deg);
 }
 
+/* Tipografía */
 .title {
   font-size: 1.3rem;
   font-weight: bold;
@@ -55,6 +56,7 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
+
 .circulo-numero {
   position: absolute;
   top: 10px;
@@ -71,7 +73,7 @@
   font-size: 16px;
 }
 
-/* Solo el botón de "Agregar al carrito" */
+/* Botón */
 .flip-card-back .btn-accion.text-dark {
   background-color: #ffffff;
   color: #000000;            
@@ -79,8 +81,63 @@
   transition: all 0.3s ease;
 }
 
-/* Hover */
 .flip-card-back .btn-accion.text-dark:hover {
   transform: scale(1.05);    
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* --------------------
+   MEDIA QUERIES
+--------------------*/
+
+/* Pantallas pequeñas <768px (tablets y móviles) */
+@media (max-width: 767px) {
+  .flip-card {
+    height: 220px;
+  }
+  .title {
+    font-size: 1.1rem;
+  }
+  .price {
+    font-size: 1rem;
+  }
+  .circulo-numero {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  .flip-card-front,
+  .flip-card-back {
+    padding: 15px;
+  }
+  .flip-card-back .btn-accion.text-dark {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+}
+
+/* Pantallas muy pequeñas <576px (celulares) */
+@media (max-width: 575px) {
+  .flip-card {
+    height: 200px;
+  }
+  .title {
+    font-size: 1rem;
+  }
+  .price {
+    font-size: 0.9rem;
+  }
+  .circulo-numero {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+  .flip-card-front,
+  .flip-card-back {
+    padding: 12px;
+  }
+  .flip-card-back .btn-accion.text-dark {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
 }
