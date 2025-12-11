@@ -12,7 +12,7 @@ import CatalogoMasculino from "./pages/CatalogoMasculino";
 import CatalogoFemenino from "./pages/CatalogoFemenino";
 import CatalogoNicho from "./pages/CatalogoNicho";
 
-import ScrollToTop from "./ScrollToTop"; // <-- IMPORTANTE
+import ScrollToTop from "./ScrollToTop";
 
 function Home() {
   return (
@@ -28,19 +28,15 @@ export default function App() {
   const [navShown, setNavShown] = useState(false);
   const location = useLocation();
 
+  // Efecto de scroll siempre activo
   useEffect(() => {
     const onScroll = () => setNavShown(window.scrollY > 80);
-
-    if (location.pathname === "/") {
-      window.addEventListener("scroll", onScroll);
-    }
-
+    window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
-  }, [location.pathname]);
+  }, []);
 
   return (
     <>
-      {/* Fuerza el scroll al inicio en cada cambio de ruta */}
       <ScrollToTop />
 
       {/* Navbar: en Home depende del scroll, en otras rutas siempre visible */}
@@ -54,6 +50,8 @@ export default function App() {
           <Route path="/masculino" element={<CatalogoMasculino />} />
           <Route path="/femenino" element={<CatalogoFemenino />} />
           <Route path="/nicho" element={<CatalogoNicho />} />
+          {/* Fallback: cualquier ruta desconocida muestra Home */}
+          <Route path="*" element={<Home />} />
         </Routes>
       </main>
 
