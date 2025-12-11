@@ -1,25 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 
-function App() {
+import NavbarAURA from "./components/NavbarAURA";
+import Hero from "./components/Hero";
+import Collections from "./components/Collections";
+import Featured from "./components/Featured";
+import FooterAURA from "./components/FooterAURA";
+import CarritoAURA from "./components/CarritoAURA";
+
+import CatalogoMasculino from "./pages/CatalogoMasculino";
+import CatalogoFemenino from "./pages/CatalogoFemenino";
+import CatalogoNicho from "./pages/CatalogoNicho";
+
+import ScrollToTop from "./ScrollToTop"; // <-- IMPORTANTE
+
+function Home() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Hero />
+      <Collections />
+      <Featured />
+    </>
   );
 }
 
-export default App;
+export default function App() {
+  const [navShown, setNavShown] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const onScroll = () => setNavShown(window.scrollY > 80);
+
+    if (location.pathname === "/") {
+      window.addEventListener("scroll", onScroll);
+    }
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [location.pathname]);
+
+  return (
+    <>
+      {/* Fuerza el scroll al inicio en cada cambio de ruta */}
+      <ScrollToTop />
+
+      {/* Navbar: en Home depende del scroll, en otras rutas siempre visible */}
+      <NavbarAURA shown={location.pathname === "/" ? navShown : true} />
+
+      <CarritoAURA />
+
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/masculino" element={<CatalogoMasculino />} />
+          <Route path="/femenino" element={<CatalogoFemenino />} />
+          <Route path="/nicho" element={<CatalogoNicho />} />
+        </Routes>
+      </main>
+
+      <FooterAURA />
+    </>
+  );
+}

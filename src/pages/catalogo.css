@@ -1,0 +1,86 @@
+.flip-card {
+  background: transparent;
+  width: 100%;
+  height: 260px;
+  perspective: 1000px; /* profundidad */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+}
+
+/* Efecto al pasar el mouse */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Frente */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flip-card-front {
+  background: #124c83;
+  border: 1px solid #333;
+  color: white;
+}
+
+.flip-card-back {
+  background: #124c83;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.price {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.circulo-numero {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+  font-size: 16px;
+}
+
+/* Solo el botón de "Agregar al carrito" */
+.flip-card-back .btn-accion.text-dark {
+  background-color: #ffffff;
+  color: #000000;            
+  border: 1px solid #fff;
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.flip-card-back .btn-accion.text-dark:hover {
+  transform: scale(1.05);    
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
