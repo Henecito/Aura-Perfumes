@@ -55,7 +55,7 @@ export default function Featured() {
     }
 
     cargarDestacados();
-  }, []);
+  }, [tablas]);
 
   // Lógica idéntica a los catálogos
   const handleAgregar = (p) => {
