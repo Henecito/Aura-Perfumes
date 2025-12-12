@@ -91,10 +91,9 @@ export default function CatalogoNicho() {
     setTimeout(() => setAgregando(null), 1000);
   };
 
-  const handleVerDetalles = async (e, f) => {
-    e.preventDefault();
+  const handleVerDetalles = async (f) => {
     await registrarVisita(f.numero, f.visitas || 0);
-    window.open(f.url_fragrantica, "_blank");
+    window.open(f.url_fragrantica, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -123,7 +122,7 @@ export default function CatalogoNicho() {
 
       <div className="row">
         {fragancias.map((f) => (
-          <div className="col-6 col-sm-6 col-md-4 mb-4" key={f.numero}>
+          <div className="col-6 col-sm-6 col-md-3 mb-4" key={f.numero}>
             <div
               className="flip-card"
               style={{ height: sizes.cardHeight }}
@@ -176,33 +175,32 @@ export default function CatalogoNicho() {
                   className="flip-card-back"
                   style={{ padding: sizes.padding }}
                 >
-                  <h5 className="mb-2" style={{ fontSize: sizes.titleSize }}>
-                    {f.nombre}
-                  </h5>
-
                   <p
                     className="text-light mb-3 text-center"
                     style={{ fontSize: sizes.priceSize }}
                   >
-                    Marca: {f.marca}
+                    Visitas: {f.visitas || 0}
                     <br />
                     Tipo: {f.tipo_fragancia}
                   </p>
 
                   {f.url_fragrantica && (
-                    <a
-                      href={f.url_fragrantica}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
                       className="btn btn-outline-light btn-accion mb-2"
                       style={{
                         fontSize: sizes.btnFont,
                         padding: sizes.btnPadding,
+                        width: "100%",
+                        cursor: "pointer",
                       }}
-                      onClick={(e) => handleVerDetalles(e, f)}
+                      onClick={() => handleVerDetalles(f)}
+                      onTouchEnd={(e) => {
+                        e.preventDefault();
+                        handleVerDetalles(f);
+                      }}
                     >
                       Ver detalles
-                    </a>
+                    </button>
                   )}
 
                   <button

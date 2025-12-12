@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useCarrito } from "../context/CarritoContext";
 
 export default function CarritoAURA() {
-  const { carrito, eliminarProducto } = useCarrito();
+  const { carrito, eliminarProducto, limpiarCarrito } = useCarrito();
 
   function enviarWhatsApp() {
     const numero = "56933365599";
@@ -25,7 +25,7 @@ export default function CarritoAURA() {
     <div
       className="offcanvas offcanvas-end text-bg-dark"
       id="carritoCanvas"
-      style={{ paddingTop: "70px", zIndex: 1055 }} // evita superposición con navbar
+      style={{ paddingTop: "70px", zIndex: 1055 }}
     >
       <div className="offcanvas-header">
         <h5 className="offcanvas-title">Carrito</h5>
@@ -45,30 +45,40 @@ export default function CarritoAURA() {
           {carrito.length === 0 ? (
             <p className="text-white-50">Tu carrito está vacío.</p>
           ) : (
-            <ul className="list-group list-group-flush">
-              {carrito.map((item) => (
-                <li
-                  key={item.id}
-                  className="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center py-3"
-                  style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
+            <>
+              <div className="d-flex justify-content-end mb-2">
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={limpiarCarrito}
                 >
-                  <div>
-                    <strong>{item.nombre}</strong>
-                    <br />
-                    <span className="text-white-50">
-                      {item.tipo} • Nº {item.numero} • {item.cantidad}x
-                    </span>
-                  </div>
-
-                  <button
-                    className="btn btn-sm btn-danger"
-                    onClick={() => eliminarProducto(item.id)}
+                  <i className="bi bi-trash3"></i> Vaciar carrito
+                </button>
+              </div>
+              <ul className="list-group list-group-flush">
+                {carrito.map((item) => (
+                  <li
+                    key={item.id}
+                    className="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center py-3"
+                    style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
                   >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                </li>
-              ))}
-            </ul>
+                    <div>
+                      <strong>{item.nombre}</strong>
+                      <br />
+                      <span className="text-white-50">
+                        {item.tipo} • Nº {item.numero} • {item.cantidad}x
+                      </span>
+                    </div>
+
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => eliminarProducto(item.id)}
+                    >
+                      <i className="bi bi-trash"></i>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
           )}
         </div>
 

@@ -3,7 +3,7 @@ import { supabase } from "../supabaseClient";
 import { useCarrito } from "../context/CarritoContext";
 
 const IMG_GENERIC =
-  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=60";
+  "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=800&q=60";
 
 export default function Featured() {
   const { agregarAlCarrito } = useCarrito();
