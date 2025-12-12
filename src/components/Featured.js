@@ -11,13 +11,6 @@ export default function Featured() {
   const [items, setItems] = useState([]);
   const [agregando, setAgregando] = useState(null);
 
-  // Tablas disponibles
-  const tablas = [
-    { nombre: "fragancias", categoria: "Hombre" },
-    { nombre: "fraganciasf", categoria: "Mujer" },
-    { nombre: "nicho", categoria: "Nicho" },
-  ];
-
   const registrarVisita = async (tabla, numero, visitasActuales) => {
     await supabase
       .from(tabla)
@@ -26,13 +19,20 @@ export default function Featured() {
   };
 
   useEffect(() => {
+    // Tablas disponibles (dentro del efecto para no romper exhaustive-deps)
+    const tablas = [
+      { nombre: "fragancias", categoria: "Hombre" },
+      { nombre: "fraganciasf", categoria: "Mujer" },
+      { nombre: "nicho", categoria: "Nicho" },
+    ];
+
     async function cargarDestacados() {
       let todas = [];
 
       for (const t of tablas) {
         const { data, error } = await supabase
           .from(t.nombre)
-          .select("numero, nombre, marca, visitas, url_fragrantica");
+          .select("numero, nombre, marca, visitas, url_fragrantica, imagen");
 
         if (error || !data) continue;
 
@@ -55,9 +55,8 @@ export default function Featured() {
     }
 
     cargarDestacados();
-  }, [tablas]);
+  }, []); // sin dependencias, porque todo lo que usa está definido dentro
 
-  // Lógica idéntica a los catálogos
   const handleAgregar = (p) => {
     const id = `${p.tabla}-${p.numero}`;
     setAgregando(id);
@@ -74,7 +73,6 @@ export default function Featured() {
     setTimeout(() => setAgregando(null), 1000);
   };
 
-  // Estilos de badge
   const badgeStyle = (categoria) => {
     switch (categoria) {
       case "Hombre":
@@ -112,7 +110,6 @@ export default function Featured() {
             return (
               <div key={id} className="col-12 col-md-6 col-lg-4">
                 <div className="p-4 card-aura rounded-3 fade-up h-100 d-flex flex-column position-relative">
-                  {/* Número */}
                   <div
                     className="numero-circulo"
                     style={{
@@ -133,7 +130,6 @@ export default function Featured() {
                     {p.numero}
                   </div>
 
-                  {/* Imagen */}
                   <div
                     style={{
                       height: 180,
@@ -145,7 +141,6 @@ export default function Featured() {
                     }}
                   ></div>
 
-                  {/* Badge */}
                   <span
                     style={{
                       padding: "4px 10px",
@@ -160,7 +155,6 @@ export default function Featured() {
                     {p.categoria}
                   </span>
 
-                  {/* Info */}
                   <h5 className="text-white">{p.nombre}</h5>
 
                   <p className="text-light opacity-75 mb-2">
@@ -169,9 +163,7 @@ export default function Featured() {
                     Visitas: {p.visitas}
                   </p>
 
-                  {/* Botones */}
                   <div className="mt-auto d-grid gap-2">
-                    {/* Ver detalles */}
                     {p.url && (
                       <button
                         className="btn btn-outline-light"
@@ -202,7 +194,6 @@ export default function Featured() {
                       </button>
                     )}
 
-                    {/* Agregar al carrito */}
                     <button
                       className={`btn btn-aura text-dark fw-bold d-flex align-items-center justify-content-center btn-add ${
                         agregando === id ? "agregando" : ""
