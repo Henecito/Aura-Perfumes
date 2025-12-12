@@ -59,11 +59,23 @@ export default function Featured() {
   const badgeStyle = (categoria) => {
     switch (categoria) {
       case "Hombre":
-        return { background: "rgba(80,150,255,0.3)", color: "#bcd8ff", border: "1px solid rgba(80,150,255,0.4)" };
+        return {
+          background: "rgba(80,150,255,0.3)",
+          color: "#bcd8ff",
+          border: "1px solid rgba(80,150,255,0.4)",
+        };
       case "Mujer":
-        return { background: "rgba(255,120,150,0.3)", color: "#ffc7d4", border: "1px solid rgba(255,120,150,0.4)" };
+        return {
+          background: "rgba(255,120,150,0.3)",
+          color: "#ffc7d4",
+          border: "1px solid rgba(255,120,150,0.4)",
+        };
       case "Nicho":
-        return { background: "rgba(255,215,100,0.25)", color: "#ffe9a8", border: "1px solid rgba(255,215,100,0.35)" };
+        return {
+          background: "rgba(255,215,100,0.25)",
+          color: "#ffe9a8",
+          border: "1px solid rgba(255,215,100,0.35)",
+        };
       default:
         return { background: "rgba(255,255,255,0.2)", color: "#fff" };
     }
@@ -81,7 +93,6 @@ export default function Featured() {
               className="col-12 col-md-6 col-lg-4"
             >
               <div className="p-4 card-aura rounded-3 fade-up h-100 d-flex flex-column position-relative">
-
                 {/* Número */}
                 {/* CÍRCULO NÚMERO */}
                 <div
@@ -145,9 +156,30 @@ export default function Featured() {
                   {p.url && (
                     <button
                       className="btn btn-outline-light"
-                      onClick={async () => {
-                        await registrarVisita(p.tabla, p.numero, p.visitas);
-                        window.open(p.url, "_blank");
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Abrir pestaña inmediatamente
+                        const win = window.open(
+                          p.url,
+                          "_blank",
+                          "noopener,noreferrer"
+                        );
+
+                        // Fallback para Safari si bloquea
+                        if (!win) {
+                          const a = document.createElement("a");
+                          a.href = p.url;
+                          a.target = "_blank";
+                          a.rel = "noopener noreferrer";
+                          document.body.appendChild(a);
+                          a.click();
+                          document.body.removeChild(a);
+                        }
+
+                        // Registrar visita en background SIN await
+                        registrarVisita(p.tabla, p.numero, p.visitas);
                       }}
                     >
                       Ver detalles
@@ -161,12 +193,10 @@ export default function Featured() {
                     Agregar al carrito
                   </button>
                 </div>
-
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

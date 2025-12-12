@@ -10,7 +10,6 @@ export default function CatalogoFemenino() {
   const [agregando, setAgregando] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Ajustar tamaños según ancho de pantalla
   const getSizes = () => {
     if (windowWidth < 576) {
       return {
@@ -56,7 +55,6 @@ export default function CatalogoFemenino() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // SUMAR VISITA
   const registrarVisita = async (numeroFragancia, visitasActuales) => {
     await supabase
       .from("fraganciasf")
@@ -67,12 +65,12 @@ export default function CatalogoFemenino() {
   useEffect(() => {
     async function fetchFraganciasF() {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("fraganciasf")
         .select("*")
         .order("numero", { ascending: true });
-      if (error) console.error("Error cargando fragancias femeninas:", error);
-      else setFragancias(data);
+
+      setFragancias(data || []);
       setLoading(false);
     }
     fetchFraganciasF();
@@ -90,28 +88,11 @@ export default function CatalogoFemenino() {
     });
     setTimeout(() => setAgregando(null), 1000);
   };
-  const handleVerDetalles = (f) => {
-    // Abrir inmediatamente la pestaña (gesto directo)
-    const nuevaVentana = window.open(
-      f.url_fragrantica,
-      "_blank",
-      "noopener,noreferrer"
-    );
-
-    // Safari puede bloquear → fallback
-    if (!nuevaVentana) {
-      window.location.href = f.url_fragrantica;
-    }
-
-    // Registrar visita en segundo plano
-    registrarVisita(f.numero, f.visitas || 0);
-  };
 
   return (
     <section className="container py-5 mt-5">
       <h2 className="text-center text-white mb-4">Catálogo Femenino</h2>
 
-      {/* NOTA IMPORTANTE SUAVE */}
       <div
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.1)",
@@ -124,9 +105,8 @@ export default function CatalogoFemenino() {
           textAlign: "center",
         }}
       >
-        Nota importante: NUESTRA MARCA NO ESTÁ ASOCIADA A NINGUNA CASA DE
-        PERFUMES INTERNACIONAL. UTILIZAMOS LOS NOMBRES DE LAS FRAGANCIAS SOLO
-        PARA INDICAR LA TENDENCIA OLFATIVA.
+        Nota importante: NUESTRA MARCA NO ESTÁ ASOCIADA A NINGUNA CASA DE PERFUMES INTERNACIONAL.
+        UTILIZAMOS LOS NOMBRES SOLO COMO REFERENCIA OLFATIVA.
       </div>
 
       {loading && <p className="text-center text-light">Cargando...</p>}
@@ -134,8 +114,17 @@ export default function CatalogoFemenino() {
       <div className="row">
         {fragancias.map((f) => (
           <div className="col-6 col-sm-6 col-md-3 mb-4" key={f.numero}>
-            <div className="flip-card" style={{ height: sizes.cardHeight }}>
-              <div className="flip-card-inner">
+            <div
+              className="flip-card"
+              onClick={(e) => e.stopPropagation()}
+              style={{ height: sizes.cardHeight }}
+            >
+              <div
+                className="flip-card-inner"
+                onClick={(e) => e.stopPropagation()}
+              >
+
+                {/* FRONT */}
                 <div
                   className="flip-card-front"
                   style={{ padding: sizes.padding }}
@@ -172,13 +161,9 @@ export default function CatalogoFemenino() {
                     {f.nombre}
                   </h5>
                   <p className="text-light">{f.marca}</p>
-                  {f.precio && (
-                    <p className="price" style={{ fontSize: sizes.priceSize }}>
-                      ${f.precio}
-                    </p>
-                  )}
                 </div>
 
+                {/* BACK */}
                 <div
                   className="flip-card-back"
                   style={{ padding: sizes.padding }}
@@ -192,19 +177,24 @@ export default function CatalogoFemenino() {
                     Tipo: {f.tipo_fragancia}
                   </p>
 
+                  {/* 💎 ABRE SOLAMENTE EN EXTERNO */}
                   {f.url_fragrantica && (
-                    <button
-                      className="btn btn-outline-light btn-accion mb-2"
+                    <a
+                      href={f.url_fragrantica}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline-light btn-accion mb-2 d-block text-center"
                       style={{
                         fontSize: sizes.btnFont,
                         padding: sizes.btnPadding,
                         width: "100%",
-                        cursor: "pointer",
                       }}
-                      onClick={() => handleVerDetalles(f)}
+                      onClick={() =>
+                        registrarVisita(f.numero, f.visitas || 0)
+                      }
                     >
                       Ver detalles
-                    </button>
+                    </a>
                   )}
 
                   <button
@@ -216,15 +206,10 @@ export default function CatalogoFemenino() {
                     onClick={() => handleAgregar(f)}
                     disabled={agregando === f.numero}
                   >
-                    {agregando === f.numero && (
-                      <span
-                        className="spinner-border spinner-border-sm me-2"
-                        role="status"
-                      ></span>
-                    )}
                     {agregando === f.numero ? "Agregado" : "Agregar al carrito"}
                   </button>
                 </div>
+
               </div>
             </div>
           </div>
