@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Aura-Perfumes/static/css/main.ec04d4c2.css",
-    "main.js": "/Aura-Perfumes/static/js/main.467fe9f6.js",
+    "main.css": "/Aura-Perfumes/static/css/main.de136c7c.css",
+    "main.js": "/Aura-Perfumes/static/js/main.63a355a0.js",
     "index.html": "/Aura-Perfumes/index.html",
-    "main.ec04d4c2.css.map": "/Aura-Perfumes/static/css/main.ec04d4c2.css.map",
-    "main.467fe9f6.js.map": "/Aura-Perfumes/static/js/main.467fe9f6.js.map"
+    "main.de136c7c.css.map": "/Aura-Perfumes/static/css/main.de136c7c.css.map",
+    "main.63a355a0.js.map": "/Aura-Perfumes/static/js/main.63a355a0.js.map"
   },
   "entrypoints": [
-    "static/css/main.ec04d4c2.css",
-    "static/js/main.467fe9f6.js"
+    "static/css/main.de136c7c.css",
+    "static/js/main.63a355a0.js"
   ]
 }
