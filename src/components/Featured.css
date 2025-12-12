@@ -1,0 +1,21 @@
+.btn-add {
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.btn-add.agregando {
+  background: #ffffff !important;
+  color: #0a0a0a !important;
+  transform: scale(0.97);
+}
+
+.check-icon {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.25s ease;
+}
+
+.btn-add.agregando .check-icon {
+  opacity: 1;
+  transform: scale(1);
+}
