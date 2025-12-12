@@ -90,10 +90,21 @@ export default function CatalogoFemenino() {
     });
     setTimeout(() => setAgregando(null), 1000);
   };
+  const handleVerDetalles = (f) => {
+    // Abrir inmediatamente la pestaña (gesto directo)
+    const nuevaVentana = window.open(
+      f.url_fragrantica,
+      "_blank",
+      "noopener,noreferrer"
+    );
 
-  const handleVerDetalles = async (f) => {
-    await registrarVisita(f.numero, f.visitas || 0);
-    window.open(f.url_fragrantica, "_blank", "noopener,noreferrer");
+    // Safari puede bloquear → fallback
+    if (!nuevaVentana) {
+      window.location.href = f.url_fragrantica;
+    }
+
+    // Registrar visita en segundo plano
+    registrarVisita(f.numero, f.visitas || 0);
   };
 
   return (
@@ -123,10 +134,7 @@ export default function CatalogoFemenino() {
       <div className="row">
         {fragancias.map((f) => (
           <div className="col-6 col-sm-6 col-md-3 mb-4" key={f.numero}>
-            <div
-              className="flip-card"
-              style={{ height: sizes.cardHeight }}
-            >
+            <div className="flip-card" style={{ height: sizes.cardHeight }}>
               <div className="flip-card-inner">
                 <div
                   className="flip-card-front"
@@ -194,10 +202,6 @@ export default function CatalogoFemenino() {
                         cursor: "pointer",
                       }}
                       onClick={() => handleVerDetalles(f)}
-                      onTouchEnd={(e) => {
-                        e.preventDefault();
-                        handleVerDetalles(f);
-                      }}
                     >
                       Ver detalles
                     </button>
@@ -218,9 +222,7 @@ export default function CatalogoFemenino() {
                         role="status"
                       ></span>
                     )}
-                    {agregando === f.numero
-                      ? "Agregado"
-                      : "Agregar al carrito"}
+                    {agregando === f.numero ? "Agregado" : "Agregar al carrito"}
                   </button>
                 </div>
               </div>

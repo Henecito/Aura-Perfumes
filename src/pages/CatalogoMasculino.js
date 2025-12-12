@@ -91,9 +91,21 @@ export default function Catalogo() {
     setTimeout(() => setAgregando(null), 1000);
   };
 
-  const handleVerDetalles = async (f) => {
-    await registrarVisita(f.numero, f.visitas || 0);
-    window.open(f.url_fragrantica, "_blank", "noopener,noreferrer");
+  const handleVerDetalles = (f) => {
+    // Abrir inmediatamente la pestaña (gesto directo)
+    const nuevaVentana = window.open(
+      f.url_fragrantica,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    // Safari puede bloquear → fallback
+    if (!nuevaVentana) {
+      window.location.href = f.url_fragrantica;
+    }
+
+    // Registrar visita en segundo plano
+    registrarVisita(f.numero, f.visitas || 0);
   };
 
   return (
@@ -191,10 +203,6 @@ export default function Catalogo() {
                         cursor: "pointer",
                       }}
                       onClick={() => handleVerDetalles(f)}
-                      onTouchEnd={(e) => {
-                        e.preventDefault();
-                        handleVerDetalles(f);
-                      }}
                     >
                       Ver detalles
                     </button>
