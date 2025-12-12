@@ -113,7 +113,7 @@ export default function Catalogo() {
 
   return (
     <section className="container py-5 mt-5">
-      <h2 className="text-center text-white mb-4">Catálogo</h2>
+      <h2 className="text-center text-white mb-4">Catálogo Masculino</h2>
 
       {/* NOTA IMPORTANTE SUAVE */}
       <div
