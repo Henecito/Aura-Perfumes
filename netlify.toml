@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[[redirects]]
+  from = "/Aura-Perfumes/*"
+  to = "/Aura-Perfumes/index.html"
+  status = 200
+  force = true
