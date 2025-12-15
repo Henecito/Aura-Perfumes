@@ -6,17 +6,16 @@ import "./Featured.css";
 const IMG_GENERIC =
   "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=800&q=60";
 
+const tablas = [
+  { nombre: "fragancias", categoria: "Hombre" },
+  { nombre: "fraganciasf", categoria: "Mujer" },
+  { nombre: "nicho", categoria: "Nicho" },
+];
+
 export default function Featured() {
   const { agregarAlCarrito } = useCarrito();
   const [items, setItems] = useState([]);
   const [agregando, setAgregando] = useState(null);
-
-  // Tablas disponibles
-  const tablas = [
-    { nombre: "fragancias", categoria: "Hombre" },
-    { nombre: "fraganciasf", categoria: "Mujer" },
-    { nombre: "nicho", categoria: "Nicho" },
-  ];
 
   const registrarVisita = async (tabla, numero, visitasActuales) => {
     await supabase
@@ -25,38 +24,38 @@ export default function Featured() {
       .eq("numero", numero);
   };
 
-  useEffect(() => {
-    async function cargarDestacados() {
-      let todas = [];
+useEffect(() => {
+  async function cargarDestacados() {
+    let todas = [];
 
-      for (const t of tablas) {
-        const { data, error } = await supabase
-          .from(t.nombre)
-          .select("numero, nombre, marca, visitas, url_fragrantica");
+    for (const t of TABLAS) {
+      const { data, error } = await supabase
+        .from(t.nombre)
+        .select("numero, nombre, marca, visitas, url_fragrantica");
 
-        if (error || !data) continue;
+      if (error || !data) continue;
 
-        const normalizadas = data.map((f) => ({
-          tabla: t.nombre,
-          categoria: t.categoria,
-          numero: f.numero,
-          nombre: f.nombre,
-          marca: f.marca,
-          visitas: f.visitas || 0,
-          url: f.url_fragrantica || null,
-          imagen: f.imagen || IMG_GENERIC,
-        }));
+      const normalizadas = data.map((f) => ({
+        tabla: t.nombre,
+        categoria: t.categoria,
+        numero: f.numero,
+        nombre: f.nombre,
+        marca: f.marca,
+        visitas: f.visitas || 0,
+        url: f.url_fragrantica || null,
+        imagen: f.imagen || IMG_GENERIC,
+      }));
 
-        todas = [...todas, ...normalizadas];
-      }
-
-      const top = todas.sort((a, b) => b.visitas - a.visitas).slice(0, 6);
-      setItems(top);
+      todas = [...todas, ...normalizadas];
     }
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    cargarDestacados();
-  }, []);
+
+    const top = todas.sort((a, b) => b.visitas - a.visitas).slice(0, 6);
+    setItems(top);
+  }
+
+  cargarDestacados();
+}, []);
+
 
   // Lógica idéntica a los catálogos
   const handleAgregar = (p) => {
