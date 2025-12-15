@@ -3,7 +3,6 @@
   publish = "build"
 
 [[redirects]]
-  from = "/Aura-Perfumes/*"
-  to = "/Aura-Perfumes/index.html"
+  from = "/*"
+  to = "/index.html"
   status = 200
-  force = true
