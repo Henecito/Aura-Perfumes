@@ -28,7 +28,7 @@ useEffect(() => {
   async function cargarDestacados() {
     let todas = [];
 
-    for (const t of TABLAS) {
+    for (const t of tablas) {
       const { data, error } = await supabase
         .from(t.nombre)
         .select("numero, nombre, marca, visitas, url_fragrantica");
