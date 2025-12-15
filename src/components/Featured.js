@@ -53,7 +53,8 @@ export default function Featured() {
       const top = todas.sort((a, b) => b.visitas - a.visitas).slice(0, 6);
       setItems(top);
     }
-
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     cargarDestacados();
   }, []);
 
