@@ -10,6 +10,9 @@ export default function CatalogoNicho() {
   const [agregando, setAgregando] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // 👉 NUEVO: estado de búsqueda
+  const [busqueda, setBusqueda] = useState("");
+
   const getSizes = () => {
     if (windowWidth < 576) {
       return {
@@ -89,9 +92,29 @@ export default function CatalogoNicho() {
     setTimeout(() => setAgregando(null), 1000);
   };
 
+  // 👉 NUEVO: fragancias filtradas
+  const fraganciasFiltradas = fragancias.filter((f) =>
+    `${f.nombre} ${f.marca} ${f.numero}`
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+  );
+
   return (
     <section className="container py-5 mt-5">
       <h2 className="text-center text-white mb-4">Catálogo Nicho</h2>
+
+      {/* 👉 NUEVO: barra de búsqueda */}
+      <div className="row mb-4 justify-content-center">
+        <div className="col-12 col-md-6">
+          <input
+            type="text"
+            className="form-control text-center"
+            placeholder="Buscar por nombre, marca o número..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+        </div>
+      </div>
 
       <div
         style={{
@@ -112,13 +135,15 @@ export default function CatalogoNicho() {
       {loading && <p className="text-center text-light">Cargando...</p>}
 
       <div className="row">
-        {fragancias.map((f) => (
+        {fraganciasFiltradas.map((f) => (
           <div className="col-6 col-sm-6 col-md-3 mb-4" key={f.numero}>
             <div className="flip-card" style={{ height: sizes.cardHeight }}>
               <div className="flip-card-inner">
-
                 {/* FRONT */}
-                <div className="flip-card-front" style={{ padding: sizes.padding }}>
+                <div
+                  className="flip-card-front"
+                  style={{ padding: sizes.padding }}
+                >
                   <div
                     className="circulo-numero"
                     style={{
@@ -154,7 +179,10 @@ export default function CatalogoNicho() {
                 </div>
 
                 {/* BACK */}
-                <div className="flip-card-back" style={{ padding: sizes.padding }}>
+                <div
+                  className="flip-card-back"
+                  style={{ padding: sizes.padding }}
+                >
                   <p
                     className="text-light mb-3 text-center"
                     style={{ fontSize: sizes.priceSize }}
@@ -164,7 +192,6 @@ export default function CatalogoNicho() {
                     Tipo: {f.tipo_fragancia}
                   </p>
 
-                  {/* ABRIR EXTERNO — SEGURO EN SAFARI Y ANDROID */}
                   {f.url_fragrantica && (
                     <a
                       href={f.url_fragrantica}
@@ -176,7 +203,9 @@ export default function CatalogoNicho() {
                         padding: sizes.btnPadding,
                         width: "100%",
                       }}
-                      onClick={() => registrarVisita(f.numero, f.visitas || 0)}
+                      onClick={() =>
+                        registrarVisita(f.numero, f.visitas || 0)
+                      }
                     >
                       Ver detalles
                     </a>
@@ -194,7 +223,6 @@ export default function CatalogoNicho() {
                     {agregando === f.numero ? "Agregado" : "Agregar al carrito"}
                   </button>
                 </div>
-
               </div>
             </div>
           </div>

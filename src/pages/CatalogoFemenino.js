@@ -10,6 +10,9 @@ export default function CatalogoFemenino() {
   const [agregando, setAgregando] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // 👉 NUEVO: estado de búsqueda
+  const [busqueda, setBusqueda] = useState("");
+
   const getSizes = () => {
     if (windowWidth < 576) {
       return {
@@ -89,9 +92,29 @@ export default function CatalogoFemenino() {
     setTimeout(() => setAgregando(null), 1000);
   };
 
+  // 👉 NUEVO: fragancias filtradas
+  const fraganciasFiltradas = fragancias.filter((f) =>
+    `${f.nombre} ${f.marca} ${f.numero}`
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+  );
+
   return (
     <section className="container py-5 mt-5">
       <h2 className="text-center text-white mb-4">Catálogo Femenino</h2>
+
+      {/* 👉 NUEVO: barra de búsqueda */}
+      <div className="row mb-4 justify-content-center">
+        <div className="col-12 col-md-6">
+          <input
+            type="text"
+            className="form-control text-center"
+            placeholder="Buscar por nombre, marca o número..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+        </div>
+      </div>
 
       <div
         style={{
@@ -112,7 +135,7 @@ export default function CatalogoFemenino() {
       {loading && <p className="text-center text-light">Cargando...</p>}
 
       <div className="row">
-        {fragancias.map((f) => (
+        {fraganciasFiltradas.map((f) => (
           <div className="col-6 col-sm-6 col-md-3 mb-4" key={f.numero}>
             <div
               className="flip-card"
@@ -123,7 +146,6 @@ export default function CatalogoFemenino() {
                 className="flip-card-inner"
                 onClick={(e) => e.stopPropagation()}
               >
-
                 {/* FRONT */}
                 <div
                   className="flip-card-front"
@@ -177,7 +199,6 @@ export default function CatalogoFemenino() {
                     Tipo: {f.tipo_fragancia}
                   </p>
 
-                  {/* 💎 ABRE SOLAMENTE EN EXTERNO */}
                   {f.url_fragrantica && (
                     <a
                       href={f.url_fragrantica}
@@ -209,7 +230,6 @@ export default function CatalogoFemenino() {
                     {agregando === f.numero ? "Agregado" : "Agregar al carrito"}
                   </button>
                 </div>
-
               </div>
             </div>
           </div>
