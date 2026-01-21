@@ -6,7 +6,7 @@ export default function CarritoAURA() {
   const { carrito, eliminarProducto, limpiarCarrito } = useCarrito();
 
   function enviarWhatsApp() {
-    const numero = "56933365599";
+    const numero = "56978301008";
 
     const mensaje = carrito
       .map(
