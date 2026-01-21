@@ -1,14 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import './custom.css';
-import App from './App';
+import "./custom.css";
+import App from "./App";
 
-import { CarritoProvider } from './context/CarritoContext';
+import { CarritoProvider } from "./context/CarritoContext";
 import { BrowserRouter } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// 👉 PWA
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -18,3 +21,6 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+// 👉 ACTIVA LA APP
+serviceWorkerRegistration.register();
